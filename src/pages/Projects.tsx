@@ -1,8 +1,8 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ArrowRight, CheckCircle, Clock, Wrench, Star, Zap, Target } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { ArrowRight, Clock } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -270,70 +270,50 @@ const Projects = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project) => (
-              <div 
+              <button
                 key={project.id}
-                className="group cursor-pointer transform transition-all duration-300 hover:scale-105"
+                type="button"
+                aria-label={`View details for ${project.title}`}
+                className="group block w-full cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
                 onClick={() => setSelectedProject(project)}
               >
-                <div className="relative aspect-[4/3] bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-2xl overflow-hidden mb-6 border border-border/30 hover:border-primary/40 hover:shadow-2xl transition-all duration-500">
-                  <img 
-                    src={project.image} 
+                <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-2xl border border-border bg-secondary/20 transition-colors duration-300 group-hover:border-primary/50">
+                  <img
+                    src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />
-                  
-                  {/* Modern Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-                  
-                  {/* Floating Action Button */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                    <div className="bg-background/90 backdrop-blur-sm rounded-full p-3 shadow-lg">
-                      <ArrowRight className="w-5 h-5 text-primary" />
-                    </div>
-                  </div>
-                  
-                  {/* Bottom Info Card */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                    <div className="bg-background/90 backdrop-blur-sm rounded-xl p-4 border border-border/50">
-                      <span className="text-primary font-semibold flex items-center gap-2 text-sm">
-                        View Project Details
-                      </span>
-                    </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="absolute bottom-4 right-4 flex h-10 w-10 translate-y-2 items-center justify-center rounded-full bg-background/90 text-primary opacity-0 shadow-md backdrop-blur-sm transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    <ArrowRight className="h-5 w-5" aria-hidden="true" />
                   </div>
                 </div>
-                
-                {/* Enhanced Content */}
+
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 px-4 py-2 rounded-full border border-primary/20">
-                      <Star className="w-3 h-3" />
+                    <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
                       {project.category}
                     </span>
-                    <span className="text-sm text-muted-foreground flex items-center gap-1 bg-secondary/30 px-3 py-1 rounded-full">
-                      <Clock className="w-3 h-3" />
+                    <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                       {project.duration}
                     </span>
                   </div>
-                  
-                  <h3 className="text-xl font-bold leading-tight group-hover:text-primary transition-colors duration-300">
+
+                  <h3 className="text-xl font-bold leading-tight transition-colors duration-300 group-hover:text-primary">
                     {project.title}
                   </h3>
-                  
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     {project.description}
                   </p>
-                  
-                  {/* Progress indicator */}
-                  <div className="flex items-center gap-2 pt-2">
-                    <div className="flex-1 h-1 bg-secondary/30 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
-                    </div>
-                    <span className="text-xs text-primary font-medium">100%</span>
+
+                  <div className="flex items-center gap-2 pt-1 text-sm font-semibold text-primary">
+                    <span>View project</span>
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                   </div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -341,186 +321,90 @@ const Projects = () => {
 
       {/* Project Detail Modal */}
       <Dialog open={!!selectedProject} onOpenChange={(open) => !open && setSelectedProject(null)}>
-        <DialogContent className="max-w-6xl max-h-[95vh] overflow-hidden bg-background border-0 shadow-2xl p-0">
+        <DialogContent className="max-h-[86svh] w-[calc(100%-2rem)] max-w-5xl overflow-hidden border-border bg-background p-0 shadow-2xl [&>button]:z-30 [&>button]:rounded-full [&>button]:bg-background/95 [&>button]:p-2 [&>button]:text-foreground [&>button]:opacity-100 [&>button]:shadow-md [&>button]:backdrop-blur-sm">
           {selectedProject && (
-            <div className="relative">
-              {/* Full Width Hero Image Section */}
-              <div className="relative h-80 md:h-[500px] overflow-hidden">
-                <img 
-                  src={selectedProject.image} 
+            <div className="max-h-[86svh] overflow-y-auto lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(28rem,1.1fr)] lg:overflow-hidden">
+              <div className="relative h-56 overflow-hidden sm:h-72 lg:h-[86svh]">
+                <img
+                  src={selectedProject.image}
                   alt={selectedProject.title}
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+                  className="h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-background/10 to-transparent" />
-                
-                {/* Transparent Info Overlay at Bottom */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent h-32 flex items-end">
-                  <div className="p-8 w-full">
-                    <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
-                      <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-primary bg-primary/20 px-6 py-3 rounded-full border border-primary/30 w-fit backdrop-blur-sm">
-                        <Star className="w-4 h-4" />
-                        {selectedProject.category}
-                      </span>
-                      <span className="text-sm text-foreground flex items-center gap-2 bg-secondary/70 px-4 py-3 rounded-full w-fit backdrop-blur-sm">
-                        <Clock className="w-4 h-4" /> 
-                        <span className="font-medium">{selectedProject.duration}</span>
-                      </span>
-                    </div>
-                    <DialogTitle className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-foreground drop-shadow-lg">
-                      {selectedProject.title}
-                    </DialogTitle>
-                  </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent lg:from-background/70" />
+                <div className="absolute bottom-5 left-5 flex items-center gap-3 lg:bottom-8 lg:left-8">
+                  <span className="rounded-full border border-primary/30 bg-background/85 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary backdrop-blur-sm">
+                    {selectedProject.category}
+                  </span>
+                  <span className="flex items-center gap-1.5 rounded-full bg-background/85 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-sm">
+                    <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                    {selectedProject.duration}
+                  </span>
                 </div>
               </div>
 
-              {/* Content Section with Custom Scrollbar */}
-              <div className="p-8 md:p-12 space-y-10 max-h-[calc(95vh-500px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary/30">
-                <style>{`
-                  .scrollbar-thin::-webkit-scrollbar {
-                    width: 8px;
-                  }
-                  .scrollbar-thumb-primary::-webkit-scrollbar-thumb {
-                    background: linear-gradient(to bottom, hsl(var(--primary)), hsl(var(--primary) / 0.7));
-                    border-radius: 4px;
-                  }
-                  .scrollbar-thumb-primary::-webkit-scrollbar-thumb:hover {
-                    background: linear-gradient(to bottom, hsl(var(--primary) / 0.8), hsl(var(--primary)));
-                  }
-                  .scrollbar-track-secondary\\/30::-webkit-scrollbar-track {
-                    background: rgba(0, 0, 0, 0.1);
-                    border-radius: 4px;
-                  }
-                `}</style>
-                {/* Description */}
-                <div className="prose prose-gray max-w-none">
-                  <p className="text-lg text-muted-foreground leading-relaxed">
+              <div className="space-y-8 p-6 sm:p-8 lg:max-h-[86svh] lg:overflow-y-auto lg:p-10">
+                <div className="space-y-4 pr-8">
+                  <DialogTitle className="text-3xl font-bold leading-tight sm:text-4xl">
+                    {selectedProject.title}
+                  </DialogTitle>
+                  <DialogDescription className="text-base leading-relaxed text-muted-foreground">
                     {selectedProject.longDescription}
-                  </p>
+                  </DialogDescription>
                 </div>
 
-                {/* Modern Specs Grid */}
                 <div>
-                  <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
-                    <Target className="w-6 h-6 text-primary" />
-                    <span>Project Specifications</span>
-                  </h3>
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    {selectedProject.specs.map((spec, index) => (
-                      <div 
-                        key={index} 
-                        className="group relative bg-gradient-to-br from-secondary/30 to-secondary/10 backdrop-blur-sm rounded-xl p-6 border border-border/50 hover:border-primary/30 hover:shadow-lg hover:scale-105 transition-all duration-300"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="relative">
-                          <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-2">
-                            {spec.label}
-                          </div>
-                          <div className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                            {spec.value}
-                          </div>
-                        </div>
+                  <h3 className="mb-4 text-lg font-bold">Project specifications</h3>
+                  <dl className="grid grid-cols-2 gap-3">
+                    {selectedProject.specs.map((spec) => (
+                      <div key={spec.label} className="rounded-xl border border-border bg-secondary/20 p-4">
+                        <dt className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                          {spec.label}
+                        </dt>
+                        <dd className="font-bold leading-snug text-foreground">{spec.value}</dd>
                       </div>
                     ))}
-                  </div>
+                  </dl>
                 </div>
 
-                {/* Enhanced Process Steps */}
                 <div>
-                  <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
-                    <Zap className="w-6 h-6 text-primary" />
-                    <span>Project Timeline</span>
-                  </h3>
-                  <div className="space-y-4">
+                  <h3 className="mb-4 text-lg font-bold">Project timeline</h3>
+                  <ol>
                     {selectedProject.steps.map((step, index) => (
-                      <div 
-                        key={index}
-                        className="group relative bg-gradient-to-r from-secondary/20 to-secondary/10 backdrop-blur-sm rounded-xl p-6 border border-border/30 hover:border-primary/40 hover:shadow-md transition-all duration-300 overflow-hidden"
+                      <li
+                        key={step.title}
+                        className="grid grid-cols-[2rem_1fr] gap-4 border-t border-border py-4 first:border-t-0 first:pt-0"
                       >
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                        
-                        <div className="relative flex items-start gap-6">
-                          {/* Step Number with modern styling */}
-                          <div className="relative flex-shrink-0">
-                            <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
-                              <span className="text-primary-foreground font-bold text-lg">{index + 1}</span>
-                            </div>
-                            {index < selectedProject.steps.length - 1 && (
-                              <div className="absolute top-12 left-1/2 w-0.5 h-8 bg-gradient-to-b from-primary/30 to-transparent transform -translate-x-1/2 hidden lg:block" />
-                            )}
-                          </div>
-                          
-                          {/* Step Content */}
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">
-                              {step.title}
-                            </h4>
-                            <p className="text-muted-foreground leading-relaxed">
-                              {step.description}
-                            </p>
-                          </div>
-                          
-                          {/* Status Icon */}
-                          <div className="flex-shrink-0">
-                            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                              <CheckCircle className="w-5 h-5 text-primary" />
-                            </div>
-                          </div>
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/30 text-sm font-bold text-primary">
+                          {index + 1}
+                        </span>
+                        <div className="min-w-0 pt-0.5">
+                          <h4 className="mb-1 font-bold">{step.title}</h4>
+                          <p className="text-sm leading-relaxed text-muted-foreground">{step.description}</p>
                         </div>
-                      </div>
+                      </li>
                     ))}
-                  </div>
+                  </ol>
                 </div>
 
-                {/* Modern CTA Section */}
-                <div className="relative bg-gradient-to-r from-primary/10 via-primary/5 to-transparent rounded-2xl p-8 border border-primary/20 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-background/50 to-secondary/20" />
-                  <div className="relative flex flex-col lg:flex-row items-center gap-6 justify-between">
-                    <div className="text-center lg:text-left">
-                      <h4 className="text-2xl font-bold mb-2">Ready to Start Your Project?</h4>
-                      <p className="text-muted-foreground max-w-md">
-                        Transform your vehicle with our expert craftsmanship and attention to detail.
-                      </p>
-                    </div>
-                    <Link to="/contact" onClick={() => setSelectedProject(null)}>
-                      <Button 
-                        size="lg" 
-                        className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-semibold px-8 py-3"
-                      >
-                        Get Your Quote
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </Button>
-                    </Link>
+                <div className="flex flex-col items-start gap-4 border-t border-border pt-6">
+                  <div>
+                    <h4 className="text-xl font-bold">Ready to start your project?</h4>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      Tell us about your vehicle and what you want to achieve.
+                    </p>
                   </div>
+                  <Button asChild size="lg">
+                    <Link to="/contact" onClick={() => setSelectedProject(null)}>
+                      Get Your Quote
+                      <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </div>
           )}
         </DialogContent>
       </Dialog>
-
-      {/* Stats */}
-      <section className="py-20 bg-secondary">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-5xl font-bold text-primary mb-2">500+</div>
-              <div className="text-muted-foreground uppercase tracking-wider text-sm">Projects Completed</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold text-primary mb-2">50+</div>
-              <div className="text-muted-foreground uppercase tracking-wider text-sm">Full Restorations</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold text-primary mb-2">200+</div>
-              <div className="text-muted-foreground uppercase tracking-wider text-sm">Custom Builds</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold text-primary mb-2">100%</div>
-              <div className="text-muted-foreground uppercase tracking-wider text-sm">Client Satisfaction</div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA */}
       <section className="py-20">
